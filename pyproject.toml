@@ -6,6 +6,7 @@ authors = ["Edinho"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
+fastapi = "^0.78.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.1.2"
