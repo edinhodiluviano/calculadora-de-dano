@@ -21,10 +21,11 @@ jobs:
                 pip install --upgrade pip
                 pip install poetry
                 poetry install
-            - name: Running pytest
+            - name: Run tests
               run: |
                 . .venv/bin/activate
                 pytest
+
     deploy:
         needs: tests
         runs-on: ubuntu-latest
@@ -61,3 +62,27 @@ jobs:
                 aws lambda update-function-code \
                     --function-name calculadora-de-dano \
                     --zip-file fileb://lambda_package.zip
+
+    post_deploy:
+        needs: deploy
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                python-version: ["3.9"]
+        steps:
+            - uses: actions/checkout@v3
+            - name: Set up Python ${{ matrix.python-version }}
+              uses: actions/setup-python@v3
+              with:
+                python-version: ${{ matrix.python-version }}
+            - name: Install dependencies
+              run: |
+                python -m venv .venv
+                . .venv/bin/activate
+                pip install --upgrade pip
+                pip install poetry
+                poetry install
+            - name: Run tests
+              run: |
+                . .venv/bin/activate
+                pytest end2end-test.py
