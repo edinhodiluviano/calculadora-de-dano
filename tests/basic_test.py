@@ -15,5 +15,5 @@ def test_should_always_pass():
 
 
 def test_when_get_ping_then_return_200(client):
-    resp = client.get("ping")
+    resp = client.get("ping2")
     assert resp.status_code == 200
