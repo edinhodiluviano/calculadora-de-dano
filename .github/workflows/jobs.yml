@@ -53,6 +53,9 @@ jobs:
                 cd packages
                 zip -r9 ../lambda_package.zip .
                 cd ..
+                zip -gr9 lambda_package.zip service
+                zip -g9 lambda_package.zip lambda_function.py
+                zip -g9 lambda_package.zip logging.conf
             - name: Deploy
               run: |
                 aws lambda update-function-code \
