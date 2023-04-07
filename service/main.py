@@ -1,14 +1,24 @@
 import fastapi
 
 
-def make_app():
-    app = fastapi.FastAPI()
-
-    @app.get("/ping2", status_code=fastapi.status.HTTP_200_OK)
-    async def ping():
-        return "ok"
-
-    return app
+app = fastapi.FastAPI()
 
 
-app = make_app()
+@app.get("/ping2")
+def ping2():
+    return "pong"
+
+
+class Damage:
+    def __init__(self, dice, bonus):
+        self.dice = dice
+        self.bonus = bonus
+
+    def avg(self):
+        return max(self.dice + self.bonus, 0)
+
+    def critical(self):
+        return self.__class__(self.dice * 2, self.bonus)
+
+    def power(self):
+        return self.__class__(self.dice, self.bonus + 10)
