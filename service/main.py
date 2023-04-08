@@ -22,3 +22,29 @@ class Damage:
 
     def power(self):
         return self.__class__(self.dice, self.bonus + 10)
+
+
+class AttackProbability:
+    def __init__(self, ca, bonus, crit):
+        self.ca = ca
+        self.bonus = bonus
+        self.crit = crit
+        self.effective_ca = ca - bonus
+
+    def _n_miss(self):
+        return min(max(self.effective_ca - 1, 1), 19)
+
+    def _n_hit(self):
+        return max(self.crit - self._n_miss() - 1, 0)
+
+    def _n_crit(self):
+        return 20 - self._n_miss() - self._n_hit()
+
+    def miss(self):
+        return round(self._n_miss() * 0.05, 4)
+
+    def hit(self):
+        return round(self._n_hit() * 0.05, 4)
+
+    def critical(self):
+        return round(self._n_crit() * 0.05, 4)
