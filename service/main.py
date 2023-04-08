@@ -23,6 +23,14 @@ class Damage:
     def power(self):
         return self.__class__(self.dice, self.bonus + 10)
 
+    def to_dict(self):
+        return dict(
+            simple=self.avg(),
+            power=self.power().avg(),
+            critical=self.critical().avg(),
+            power_critical=self.power().critical().avg(),
+        )
+
 
 class AttackProbability:
     def __init__(self, ca, bonus, crit):
