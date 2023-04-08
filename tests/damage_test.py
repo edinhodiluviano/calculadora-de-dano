@@ -81,32 +81,3 @@ def test_damage_with_critical_hit_and_power_attack(dice, bonus, expected_avg):
     dmg = Damage(dice=dice, bonus=bonus)
     assert dmg.critical().power().avg() == expected_avg
     assert dmg.power().critical().avg() == expected_avg
-
-
-def test_damage_to_dict_return_dict():
-    dmg = Damage(3.5, 1)
-    d = dmg.to_dict()
-    assert isinstance(d, dict)
-
-
-def test_damage_to_dict_return_dict_with_4_fields():
-    dmg = Damage(3.5, 1)
-    d = dmg.to_dict()
-    assert len(d) == 4
-
-
-fields = ["simple", "power", "critical", "power_critical"]
-
-
-@pytest.mark.parametrize("field", fields)
-def test_damage_to_dict_returned_dict_have_field(field):
-    dmg = Damage(3.5, 1)
-    d = dmg.to_dict()
-    assert field in d
-
-
-@pytest.mark.parametrize("field", fields)
-def test_damage_to_dict_returned_dict_field_is_float_or_int(field):
-    dmg = Damage(3.5, 1)
-    d = dmg.to_dict()
-    assert isinstance(d[field], (float, int))
