@@ -3,8 +3,8 @@ max-complexity = 5
 per-file-ignores =
     # imported but unused
     __init__.py: F401
-    # All docstrings in tests
-    tests/**.py: D
+    # All docstrings in tests, sapce after ( or [
+    tests/**.py: D, E201
 exclude =
     # No need to traverse our git directory
     .git,

@@ -5,13 +5,13 @@ from service.main import Damage
 
 simple_cases = [
     # dice    bonus    avg
-    [    0,       0,     0],  # NOQA E201
-    [    1,       0,     1],  # NOQA E201
-    [    1,       2,     3],  # NOQA E201
-    [    0,       2,     2],  # NOQA E201
-    [  4.5,      13,  17.5],  # NOQA E201
-    [    1,      -1,     0],  # NOQA E201
-    [    1,      -2,     0],  # NOQA E201
+    [    0,       0,     0],  # NOQA: BLK100
+    [    1,       0,     1],
+    [    1,       2,     3],
+    [    0,       2,     2],
+    [  4.5,      13,  17.5],
+    [    1,      -1,     0],
+    [    1,      -2,     0],
 ]
 
 
@@ -23,16 +23,16 @@ def test_simple_cases(dice, bonus, expected_avg):
 
 power_attack_cases = [
     # dice    bonus    avg
-    [    0,       0,    10],  # NOQA E201
-    [    1,       0,    11],  # NOQA E201
-    [    1,       2,    13],  # NOQA E201
-    [    0,       2,    12],  # NOQA E201
-    [  4.5,      13,  27.5],  # NOQA E201
-    [    1,      -1,    10],  # NOQA E201
-    [    1,      -2,     9],  # NOQA E201
-    [    1,     -10,     1],  # NOQA E201
-    [    1,     -11,     0],  # NOQA E201
-    [    1,     -12,     0],  # NOQA E201
+    [    0,       0,    10],
+    [    1,       0,    11],
+    [    1,       2,    13],
+    [    0,       2,    12],
+    [  4.5,      13,  27.5],
+    [    1,      -1,    10],
+    [    1,      -2,     9],
+    [    1,     -10,     1],
+    [    1,     -11,     0],
+    [    1,     -12,     0],
 ]
 
 
@@ -44,13 +44,13 @@ def test_damage_with_power_attack(dice, bonus, expected_avg):
 
 critical_damage_cases = [
     # dice    bonus    avg
-    [    0,       0,     0],  # NOQA E201
-    [    1,       0,     2],  # NOQA E201
-    [    1,       2,     4],  # NOQA E201
-    [    0,       2,     2],  # NOQA E201
-    [  4.5,      13,    22],  # NOQA E201
-    [    1,      -2,     0],  # NOQA E201
-    [    1,      -3,     0],  # NOQA E201
+    [    0,       0,     0],
+    [    1,       0,     2],
+    [    1,       2,     4],
+    [    0,       2,     2],
+    [  4.5,      13,    22],
+    [    1,      -2,     0],
+    [    1,      -3,     0],
 ]
 
 
@@ -62,17 +62,17 @@ def test_damage_with_critical_hit(dice, bonus, expected_avg):
 
 critical_power_cases = [
     # dice    bonus    avg
-    [    0,       0,    10],  # NOQA E201
-    [    1,       0,    12],  # NOQA E201
-    [    1,       2,    14],  # NOQA E201
-    [    0,       2,    12],  # NOQA E201
-    [  4.5,      13,    32],  # NOQA E201
-    [    1,      -1,    11],  # NOQA E201
-    [    1,      -2,    10],  # NOQA E201
-    [    1,     -10,     2],  # NOQA E201
-    [    1,     -11,     1],  # NOQA E201
-    [    1,     -12,     0],  # NOQA E201
-    [    1,     -13,     0],  # NOQA E201
+    [    0,       0,    10],
+    [    1,       0,    12],
+    [    1,       2,    14],
+    [    0,       2,    12],
+    [  4.5,      13,    32],
+    [    1,      -1,    11],
+    [    1,      -2,    10],
+    [    1,     -10,     2],
+    [    1,     -11,     1],
+    [    1,     -12,     0],
+    [    1,     -13,     0],
 ]
 
 
