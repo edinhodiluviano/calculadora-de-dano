@@ -1,6 +1,6 @@
 import pytest
 
-from service.main import AttackProbability
+from service.main import Attack, AttackProbability
 
 
 cases = [
@@ -42,19 +42,22 @@ cases = [
 @pytest.mark.parametrize("ca,bonus,crit,n_miss,n_hit,n_crit", cases)
 def test_miss_prob(ca, bonus, crit, n_miss, n_hit, n_crit):
     expected_miss_prob = round(n_miss * 0.05, 4)
-    att_prob = AttackProbability(ca=ca, bonus=bonus, crit=crit)
+    att = Attack(att_bonus=bonus, crit=crit, dmg_dice=0, dmg_bonus=0)
+    att_prob = AttackProbability(ca=ca, attack=att)
     assert att_prob.miss() == expected_miss_prob
 
 
 @pytest.mark.parametrize("ca,bonus,crit,n_miss,n_hit,n_crit", cases)
 def test_hit_prob(ca, bonus, crit, n_miss, n_hit, n_crit):
     expected_hit_prob = round(n_hit * 0.05, 4)
-    att_prob = AttackProbability(ca=ca, bonus=bonus, crit=crit)
+    att = Attack(att_bonus=bonus, crit=crit, dmg_dice=0, dmg_bonus=0)
+    att_prob = AttackProbability(ca=ca, attack=att)
     assert att_prob.hit() == expected_hit_prob
 
 
 @pytest.mark.parametrize("ca,bonus,crit,n_miss,n_hit,n_crit", cases)
 def test_crit_prob(ca, bonus, crit, n_miss, n_hit, n_crit):
     expected_crit_prob = round(n_crit * 0.05, 4)
-    att_prob = AttackProbability(ca=ca, bonus=bonus, crit=crit)
+    att = Attack(att_bonus=bonus, crit=crit, dmg_dice=0, dmg_bonus=0)
+    att_prob = AttackProbability(ca=ca, attack=att)
     assert att_prob.critical() == expected_crit_prob

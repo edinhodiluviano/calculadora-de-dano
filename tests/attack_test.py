@@ -1,6 +1,6 @@
 import pytest
 
-from service.main import Damage
+from service.main import Attack
 
 
 simple_cases = [
@@ -17,8 +17,8 @@ simple_cases = [
 
 @pytest.mark.parametrize("dice,bonus,expected_avg", simple_cases)
 def test_simple_cases(dice, bonus, expected_avg):
-    dmg = Damage(dice=dice, bonus=bonus)
-    assert dmg.avg() == expected_avg
+    dmg = Attack(dmg_dice=dice, dmg_bonus=bonus, att_bonus=0, crit=0)
+    assert dmg.damage() == expected_avg
 
 
 power_attack_cases = [
@@ -37,9 +37,9 @@ power_attack_cases = [
 
 
 @pytest.mark.parametrize("dice,bonus,expected_avg", power_attack_cases)
-def test_damage_with_power_attack(dice, bonus, expected_avg):
-    dmg = Damage(dice=dice, bonus=bonus)
-    assert dmg.power().avg() == expected_avg
+def test_attack_with_power_attack(dice, bonus, expected_avg):
+    dmg = Attack(dmg_dice=dice, dmg_bonus=bonus, att_bonus=0, crit=0)
+    assert dmg.power().damage() == expected_avg
 
 
 critical_damage_cases = [
@@ -55,9 +55,9 @@ critical_damage_cases = [
 
 
 @pytest.mark.parametrize("dice,bonus,expected_avg", critical_damage_cases)
-def test_damage_with_critical_hit(dice, bonus, expected_avg):
-    dmg = Damage(dice=dice, bonus=bonus)
-    assert dmg.critical().avg() == expected_avg
+def test_attack_with_critical_hit(dice, bonus, expected_avg):
+    dmg = Attack(dmg_dice=dice, dmg_bonus=bonus, att_bonus=0, crit=0)
+    assert dmg.critical() == expected_avg
 
 
 critical_power_cases = [
@@ -77,7 +77,6 @@ critical_power_cases = [
 
 
 @pytest.mark.parametrize("dice,bonus,expected_avg", critical_power_cases)
-def test_damage_with_critical_hit_and_power_attack(dice, bonus, expected_avg):
-    dmg = Damage(dice=dice, bonus=bonus)
-    assert dmg.critical().power().avg() == expected_avg
-    assert dmg.power().critical().avg() == expected_avg
+def test_attack_with_critical_hit_and_power_attack(dice, bonus, expected_avg):
+    dmg = Attack(dmg_dice=dice, dmg_bonus=bonus, att_bonus=0, crit=0)
+    assert dmg.power().critical() == expected_avg
