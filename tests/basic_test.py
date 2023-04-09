@@ -67,3 +67,44 @@ def test_when_get_average_damage_then_return_expected_values(client):
     damage = r.json()["damage"]
     assert 11 < damage["simple"] < 12
     assert 8 < damage["power"] < 9
+
+
+def test_when_get_damage_curve_then_return_200(client):
+    params = dict(ca_min=10, ca_max=30, att_bonus=0, dmg_dice=2, dmg_bonus=20)
+    r = client.get("damage_curve", params=params)
+    assert r.status_code == 200
+
+
+def test_when_get_damage_curve_then_return_dict_with_damage_curve_key(client):
+    params = dict(ca_min=10, ca_max=30, att_bonus=0, dmg_dice=2, dmg_bonus=20)
+    r = client.get("damage_curve", params=params)
+    assert "damage_curve" in r.json()
+
+
+def test_when_get_damage_curve_then_return_damage_curve_object(client):
+    params = dict(ca_min=10, ca_max=30, att_bonus=0, dmg_dice=2, dmg_bonus=20)
+    r = client.get("damage_curve", params=params)
+    dmg_curve = r.json()["damage_curve"]
+    assert is_damage_curve_object(dmg_curve)
+
+
+def is_damage_curve_object(damage_curve):
+    try:
+        assert isinstance(damage_curve, dict)
+        for key, value in damage_curve.items():
+            assert isinstance(key, str)
+            assert key.isdecimal()
+            assert is_damage_object(value)
+    except AssertionError:
+        return False
+    return True
+
+
+def test_when_get_damage_curve_then_damages_are_increasing(client):
+    params = dict(ca_min=10, ca_max=30, att_bonus=0, dmg_dice=2, dmg_bonus=20)
+    r = client.get("damage_curve", params=params)
+    dmg_curve = r.json()["damage_curve"]
+    damages = list(dmg_curve.values())
+    for damage_lower_ac, damage_higher_ac in zip(damages[0:], damages[1:]):
+        assert damage_lower_ac["simple"] >= damage_higher_ac["simple"]
+        assert damage_lower_ac["power"] >= damage_higher_ac["power"]

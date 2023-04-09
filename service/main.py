@@ -59,10 +59,11 @@ class AttackProbability:
         return round(self._n_crit() * 0.05, 4)
 
     def damage(self):
-        return (
+        dmg = (
             self.attack.damage() * self.hit()
             + self.attack.critical() * self.critical()
         )
+        return round(dmg, 4)
 
     def power(self):
         return self.__class__(ca=self.ca, attack=self.attack.power())
@@ -89,3 +90,25 @@ def get_average_damage(
     att_probs = AttackProbability(attack=att, ca=ca)
     damage = Damage.from_attack(attack=att_probs)
     return {"damage": damage.dict()}
+
+
+@app.get("/damage_curve")
+def get_damage_curve(
+    ca_min: int,
+    ca_max: int,
+    att_bonus: int,
+    dmg_dice: float,
+    dmg_bonus: float,
+    crit: int = 20,
+):
+    att = Attack(
+        att_bonus=att_bonus, dmg_dice=dmg_dice, dmg_bonus=dmg_bonus, crit=crit
+    )
+
+    def _calc_damage(ca):
+        return Damage.from_attack(attack=AttackProbability(attack=att, ca=ca))
+
+    damage_curve = {
+        ca: _calc_damage(ca=ca) for ca in range(ca_min, ca_max + 1)
+    }
+    return {"damage_curve": damage_curve}
