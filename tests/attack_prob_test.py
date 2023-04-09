@@ -4,7 +4,7 @@ from service.main import Attack, AttackProbability
 
 
 cases = [
-    #  ca   bonus    crit  n_miss   n_hit  n_crit
+    #  ac   bonus    crit  n_miss   n_hit  n_crit
     [  10,      0,     20,      9,     10,      1],  # NOQA: BLK100
     [  11,      1,     20,      9,     10,      1],
     [  11,      0,     20,     10,      9,      1],
@@ -39,25 +39,25 @@ cases = [
 ]
 
 
-@pytest.mark.parametrize("ca,bonus,crit,n_miss,n_hit,n_crit", cases)
-def test_miss_prob(ca, bonus, crit, n_miss, n_hit, n_crit):
+@pytest.mark.parametrize("ac,bonus,crit,n_miss,n_hit,n_crit", cases)
+def test_miss_prob(ac, bonus, crit, n_miss, n_hit, n_crit):
     expected_miss_prob = round(n_miss * 0.05, 4)
     att = Attack(att_bonus=bonus, crit=crit, dmg_dice=0, dmg_bonus=0)
-    att_prob = AttackProbability(ca=ca, attack=att)
+    att_prob = AttackProbability(ac=ac, attack=att)
     assert att_prob.miss() == expected_miss_prob
 
 
-@pytest.mark.parametrize("ca,bonus,crit,n_miss,n_hit,n_crit", cases)
-def test_hit_prob(ca, bonus, crit, n_miss, n_hit, n_crit):
+@pytest.mark.parametrize("ac,bonus,crit,n_miss,n_hit,n_crit", cases)
+def test_hit_prob(ac, bonus, crit, n_miss, n_hit, n_crit):
     expected_hit_prob = round(n_hit * 0.05, 4)
     att = Attack(att_bonus=bonus, crit=crit, dmg_dice=0, dmg_bonus=0)
-    att_prob = AttackProbability(ca=ca, attack=att)
+    att_prob = AttackProbability(ac=ac, attack=att)
     assert att_prob.hit() == expected_hit_prob
 
 
-@pytest.mark.parametrize("ca,bonus,crit,n_miss,n_hit,n_crit", cases)
-def test_crit_prob(ca, bonus, crit, n_miss, n_hit, n_crit):
+@pytest.mark.parametrize("ac,bonus,crit,n_miss,n_hit,n_crit", cases)
+def test_crit_prob(ac, bonus, crit, n_miss, n_hit, n_crit):
     expected_crit_prob = round(n_crit * 0.05, 4)
     att = Attack(att_bonus=bonus, crit=crit, dmg_dice=0, dmg_bonus=0)
-    att_prob = AttackProbability(ca=ca, attack=att)
+    att_prob = AttackProbability(ac=ac, attack=att)
     assert att_prob.critical() == expected_crit_prob

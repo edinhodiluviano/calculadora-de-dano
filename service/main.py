@@ -35,13 +35,13 @@ class Attack:
 
 
 class AttackProbability:
-    def __init__(self, ca: int, attack: Attack):
-        self.ca = ca
+    def __init__(self, ac: int, attack: Attack):
+        self.ac = ac
         self.attack = attack
-        self.effective_ca = ca - attack.att_bonus
+        self.effective_ac = ac - attack.att_bonus
 
     def _n_miss(self):
-        return min(max(self.effective_ca - 1, 1), 19)
+        return min(max(self.effective_ac - 1, 1), 19)
 
     def _n_hit(self):
         return max(self.attack.crit - self._n_miss() - 1, 0)
@@ -66,7 +66,7 @@ class AttackProbability:
         return round(dmg, 4)
 
     def power(self):
-        return self.__class__(ca=self.ca, attack=self.attack.power())
+        return self.__class__(ac=self.ac, attack=self.attack.power())
 
 
 class Damage(BaseModel):
@@ -82,20 +82,20 @@ class Damage(BaseModel):
 
 @app.get("/average_damage")
 def get_average_damage(
-    ca: int, att_bonus: int, dmg_dice: float, dmg_bonus: float, crit: int = 20
+    ac: int, att_bonus: int, dmg_dice: float, dmg_bonus: float, crit: int = 20
 ):
     att = Attack(
         att_bonus=att_bonus, dmg_dice=dmg_dice, dmg_bonus=dmg_bonus, crit=crit
     )
-    att_probs = AttackProbability(attack=att, ca=ca)
+    att_probs = AttackProbability(attack=att, ac=ac)
     damage = Damage.from_attack(attack=att_probs)
     return {"damage": damage.dict()}
 
 
 @app.get("/damage_curve")
 def get_damage_curve(
-    ca_min: int,
-    ca_max: int,
+    ac_min: int,
+    ac_max: int,
     att_bonus: int,
     dmg_dice: float,
     dmg_bonus: float,
@@ -105,10 +105,10 @@ def get_damage_curve(
         att_bonus=att_bonus, dmg_dice=dmg_dice, dmg_bonus=dmg_bonus, crit=crit
     )
 
-    def _calc_damage(ca):
-        return Damage.from_attack(attack=AttackProbability(attack=att, ca=ca))
+    def _calc_damage(ac):
+        return Damage.from_attack(attack=AttackProbability(attack=att, ac=ac))
 
     damage_curve = {
-        ca: _calc_damage(ca=ca) for ca in range(ca_min, ca_max + 1)
+        ac: _calc_damage(ac=ac) for ac in range(ac_min, ac_max + 1)
     }
     return {"damage_curve": damage_curve}
