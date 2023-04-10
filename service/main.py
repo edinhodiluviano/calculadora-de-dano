@@ -1,4 +1,7 @@
+from typing import Annotated
+
 import fastapi
+from fastapi import Query
 from pydantic import BaseModel
 
 
@@ -82,7 +85,11 @@ class Damage(BaseModel):
 
 @app.get("/average_damage")
 def get_average_damage(
-    ac: int, att_bonus: int, dmg_dice: float, dmg_bonus: float, crit: int = 20
+    ac: Annotated[int, Query(ge=0, le=40)],
+    att_bonus: Annotated[int, Query(ge=-5, le=50)],
+    dmg_dice: Annotated[float, Query(ge=-10, le=100)],
+    dmg_bonus: Annotated[float, Query(ge=-5, le=100)],
+    crit: Annotated[int, Query(ge=1, le=20)] = 20,
 ):
     att = Attack(
         att_bonus=att_bonus, dmg_dice=dmg_dice, dmg_bonus=dmg_bonus, crit=crit

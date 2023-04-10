@@ -37,6 +37,28 @@ def test_when_get_average_damage_then_return_200(client):
     assert r.status_code == 200, r.text
 
 
+invalid_values = [
+    {"ac": -1},
+    {"ac": 41},
+    {"att_bonus": -11},
+    {"att_bonus": 100},
+    {"dmg_dice": -11},
+    {"dmg_dice": 100},
+    {"dmg_bonus": -11},
+    {"dmg_bonus": 100},
+]
+
+
+@pytest.mark.parametrize("invalid_value", invalid_values)
+def test_when_get_average_damage_with_invalid_values_then_return_422(
+    client, invalid_value
+):
+    params = dict(ac=-1, att_bonus=0, dmg_dice=0, dmg_bonus=0)
+    params.update(invalid_value)
+    r = client.get("average_damage", params=params)
+    assert r.status_code == 422, r.text
+
+
 def test_when_get_average_damage_then_return_dict_with_damage_field(client):
     params = dict(ac=10, att_bonus=0, dmg_dice=0, dmg_bonus=0)
     r = client.get("average_damage", params=params)
